@@ -1,0 +1,32 @@
+.header {
+    display: grid;
+    grid-template-columns: 110px 1fr 90px;
+    grid-template-rows: 60px;
+    align-items: center;
+    justify-items: center;
+    transition: var(--transition);
+
+    &.light {
+        background-color: var(--mid-light);
+    }
+
+    &.dark {
+        background-color: var(--mid-dark);
+    }
+}
+
+.header-home {
+    height: 50px;
+    width: 100px;
+    transition: var(--transition);
+    background-image: url(../../../assets/home.svg);
+    background-size: 100px 50px;
+
+    &.light {
+        filter: var(--strong-dark-filter);
+    }
+
+    &.dark {
+        filter: var(--strong-light-filter);
+    }
+}
