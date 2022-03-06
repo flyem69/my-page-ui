@@ -1,5 +1,6 @@
 <div class="app">
     <app-header></app-header>
-    <div [ngClass]="['app-content', appearance]"></div>
+    <div [ngClass]="['app-content', appearance]">
+        <router-outlet></router-outlet>
+    </div>
 </div>
-<router-outlet></router-outlet>

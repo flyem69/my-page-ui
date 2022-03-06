@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DarkModeService } from './services/darkmode/dark-mode.service';
+import { DarkModeService } from '../../services/darkmode/dark-mode.service';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    selector: 'app-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.scss'],
 })
-export class AppComponent implements OnInit {
-    title: string = 'my-page';
+export class MenuComponent implements OnInit {
     appearance: string = '';
 
     constructor(private darkModeService: DarkModeService) {}

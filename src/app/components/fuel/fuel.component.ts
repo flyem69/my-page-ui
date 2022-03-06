@@ -3,17 +3,15 @@ import { BehaviorSubject } from 'rxjs';
 import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss'],
+    selector: 'app-fuel',
+    templateUrl: './fuel.component.html',
+    styleUrls: ['./fuel.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class FuelComponent implements OnInit {
     appearance: string = '';
-    darkMode: BehaviorSubject<boolean>;
+    test$: BehaviorSubject<string> = new BehaviorSubject('');
 
-    constructor(private darkModeService: DarkModeService) {
-        this.darkMode = darkModeService.getSubject();
-    }
+    constructor(private darkModeService: DarkModeService) {}
 
     ngOnInit(): void {
         this.darkModeService.getObservable().subscribe((darkMode) => {

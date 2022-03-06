@@ -1,5 +1,7 @@
 <div [ngClass]="['header', appearance]">
-    <div [ngClass]="['header-home', appearance]"></div>
+    <a routerLink="/">
+        <div [ngClass]="['header-home', appearance]"></div>
+    </a>
     <div></div>
     <app-switch [subject]="darkMode"></app-switch>
 </div>

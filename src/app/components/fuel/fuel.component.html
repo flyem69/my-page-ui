@@ -1,0 +1,37 @@
+<div class="fuel">
+    <div class="fuel-categories">
+        <div class="fuel-race">
+            <div style="justify-self: right; grid-area: a;">
+                Lap time
+            </div>
+            <app-input [value$]="test$" style="grid-area: b;"></app-input>
+            <app-input [value$]="test$" style="grid-area: c;"></app-input>
+            <app-input [value$]="test$" style="grid-area: d;"></app-input>
+            <div style="justify-self: right; grid-area: e;">
+                Fuel per lap
+            </div>
+            <app-input [value$]="test$" style="grid-area: f;"></app-input>
+            <div style="justify-self: right; grid-area: g">
+                Race length
+            </div>
+            <app-input [value$]="test$" style="grid-area: h;"></app-input>
+            <div [ngClass]="['button', appearance]" style="grid-area: i;">
+                Calculate race fuel
+            </div>
+        </div>
+        <div class="fuel-road">
+            <div style="justify-self: right; grid-area: a;">
+                Fuel per 100 km
+            </div>
+            <app-input [value$]="test$" style="grid-area: b;"></app-input>
+            <div style="justify-self: right; grid-area: c;">
+                Distance
+            </div>
+            <app-input [value$]="test$" style="grid-area: d;"></app-input>
+            <div [ngClass]="['button', appearance]" style="grid-area: e;">
+                Calculate road fuel
+            </div>
+        </div>
+    </div>
+    <div class="fuel-result" [innerText]="'0l'"></div>
+</div>
