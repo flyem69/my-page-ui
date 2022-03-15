@@ -1,6 +1,6 @@
 <input 
     [ngClass]="['input', appearance, validity]"
     [placeholder]="placeholder"
-    [value]="value"
-    (change)="change($event)"
+    [ngModel]="value$ | async"
+    (ngModelChange)="change($event)"
     (focus)="focus()"/>

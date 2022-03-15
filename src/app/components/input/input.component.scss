@@ -41,6 +41,6 @@
     }
 
     &.invalid {
-        border-color: var(--red);
+        border-color: var(--red) !important;
     }
 }
