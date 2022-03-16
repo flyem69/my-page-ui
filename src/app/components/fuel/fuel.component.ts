@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
 import { InputData } from 'src/app/models/input-data';
 import { InputRegex } from 'src/app/enumeration/input-regex';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
     selector: 'app-fuel',
@@ -10,12 +11,13 @@ import { InputRegex } from 'src/app/enumeration/input-regex';
     styleUrls: ['./fuel.component.scss'],
 })
 export class FuelComponent implements OnInit {
-    private lapTimeValidity: BehaviorSubject<boolean> =
-        new BehaviorSubject<boolean>(true);
-    appearance: string = '';
+    private lapTimeValidity = new BehaviorSubject<boolean>(true);
+    appearance = '';
     inputsData: { [name: string]: InputData } = {};
-    inputRegex: typeof InputRegex = InputRegex;
-    calcLock: boolean = false;
+    inputRegex = InputRegex;
+    calcLock = false;
+    resultValue = new BehaviorSubject<number>(0);
+    result = '';
 
     constructor(private darkModeService: DarkModeService) {
         this.inputsData['lapTimeMin'] = this.getInputData(this.lapTimeValidity);
@@ -30,6 +32,9 @@ export class FuelComponent implements OnInit {
     ngOnInit(): void {
         this.darkModeService.getObservable().subscribe((darkMode) => {
             this.appearance = darkMode ? 'dark' : 'light';
+        });
+        this.resultValue.pipe(distinctUntilChanged()).subscribe((value) => {
+            this.result = value + ' l';
         });
     }
 
@@ -68,7 +73,7 @@ export class FuelComponent implements OnInit {
         if (this.finalCalcValidation(raceInputs)) {
             const laps = raceInputs.raceLength.value / raceInputs.lapTime.value;
             const result = raceInputs.fuelPerLap.value * laps;
-            console.log(result);
+            this.setResult(result);
         }
     }
 
@@ -95,7 +100,7 @@ export class FuelComponent implements OnInit {
         if (this.finalCalcValidation(roadInputs)) {
             const distancePer100 = roadInputs.distance.value / 100;
             const result: number = roadInputs.fuelPer100.value * distancePer100;
-            console.log(result);
+            this.setResult(result);
         }
     }
 
@@ -138,14 +143,57 @@ export class FuelComponent implements OnInit {
     }
 
     private getInputData(
-        externalValidity$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-            true
-        )
+        externalValidity$ = new BehaviorSubject<boolean>(true)
     ): InputData {
         return {
             value$: new BehaviorSubject<string>(''),
             localValidity$: new BehaviorSubject<boolean>(true),
             externalValidity$: externalValidity$,
         };
+    }
+
+    private setResult(value: number): void {
+        this.calcLock = true;
+        const setResultTime = 500;
+        const numberOfChanges = 50;
+        const valueGap =
+            (value - this.resultValue.getValue()) / numberOfChanges;
+        const timeGap = setResultTime / numberOfChanges;
+        const loopData = {
+            iteration: 0,
+            limit: numberOfChanges,
+            valueGap: valueGap,
+            timeGap: timeGap,
+            currentValue: this.resultValue.getValue(),
+        };
+        this.setResultLoop(loopData);
+    }
+
+    private setResultLoop(data: {
+        iteration: number;
+        limit: number;
+        valueGap: number;
+        timeGap: number;
+        currentValue: number;
+    }) {
+        if (data.iteration >= data.limit) {
+            const finalResult = this.fixFloatingPointPrecision(
+                data.currentValue
+            );
+            this.resultValue.next(finalResult);
+            this.calcLock = false;
+            return;
+        }
+        setTimeout(() => {
+            data.currentValue += data.valueGap;
+            this.resultValue.next(Math.ceil(data.currentValue));
+            data.iteration++;
+            this.setResultLoop(data);
+        }, data.timeGap);
+    }
+
+    private fixFloatingPointPrecision(value: number) {
+        let fixedValue = Math.round((value + Number.EPSILON) * 100) / 100;
+        return Math.ceil(fixedValue);
     }
 }
