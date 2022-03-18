@@ -1,7 +1,8 @@
 <div [ngClass]="['header', appearance]">
-    <a routerLink="/">
-        <div [ngClass]="['header-home', appearance]"></div>
+    <a class="header-home" routerLink="/">
+        <div [ngClass]="['header-home-icon', appearance]"></div>
     </a>
-    <div></div>
-    <app-switch [subject]="darkMode"></app-switch>
+    <div class="header-toolbar" #toolbar>
+        <app-switch [subject]="darkMode"></app-switch>
+    </div>
 </div>
