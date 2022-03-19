@@ -16,17 +16,16 @@ import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
 })
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('toolbar') toolbar!: ElementRef<HTMLDivElement>;
-    appearance = '';
-    darkMode: BehaviorSubject<boolean>;
+    appearance$: BehaviorSubject<string>;
+    darkMode$: BehaviorSubject<boolean>;
 
     constructor(private darkModeService: DarkModeService) {
-        this.darkMode = darkModeService.getSubject();
+        this.appearance$ = new BehaviorSubject<string>('');
+        this.darkMode$ = darkModeService.getSubject();
     }
 
     ngOnInit(): void {
-        this.darkModeService.getObservable().subscribe((darkMode) => {
-            this.appearance = darkMode ? 'dark' : 'light';
-        });
+        this.darkModeService.subscribe(this.appearance$);
     }
 
     ngAfterViewInit(): void {

@@ -8,15 +8,19 @@ import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
     styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnInit {
-    @Input() placeholder?: string = '';
+    @Input() placeholder: string;
     @Input() valueRegex?: RegExp;
     @Input() localValidity$?: BehaviorSubject<boolean>;
     @Input() externalValidity$?: BehaviorSubject<boolean>;
     @Input() value$!: BehaviorSubject<string>;
-    appearance: string = '';
-    validity: string = 'valid';
+    appearance$: BehaviorSubject<string>;
+    validity: string;
 
-    constructor(private darkModeService: DarkModeService) {}
+    constructor(private darkModeService: DarkModeService) {
+        this.placeholder = '';
+        this.appearance$ = new BehaviorSubject<string>('');
+        this.validity = 'valid';
+    }
 
     ngOnInit(): void {
         if (this.valueRegex && !this.localValidity$) {
@@ -24,9 +28,7 @@ export class InputComponent implements OnInit {
                 'Missing localValidity$ value on input component when valueRegex is present'
             );
         }
-        this.darkModeService.getObservable().subscribe((darkMode) => {
-            this.appearance = darkMode ? 'dark' : 'light';
-        });
+        this.darkModeService.subscribe(this.appearance$);
         if (this.localValidity$ && this.externalValidity$) {
             combineLatest([
                 this.localValidity$,

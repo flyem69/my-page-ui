@@ -18,4 +18,11 @@ export class DarkModeService {
     getSubject(): BehaviorSubject<boolean> {
         return this.darkMode$;
     }
+
+    subscribe(appearance$: BehaviorSubject<string>): void {
+        this.darkMode$.subscribe((darkMode) => {
+            const appearance = darkMode ? 'dark' : 'light';
+            appearance$.next(appearance);
+        });
+    }
 }

@@ -7,18 +7,20 @@ import { HeaderComponent } from './components/header/header.component';
 import { InputComponent } from './components/input/input.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { NgModule } from '@angular/core';
+import { StreamsComponent } from './components/streams/streams.component';
 import { SwitchComponent } from './components/switch/switch.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        HeaderComponent,
-        SwitchComponent,
-        MenuComponent,
         FuelComponent,
+        HeaderComponent,
         InputComponent,
+        MenuComponent,
+        StreamsComponent,
+        SwitchComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, FormsModule],
+    imports: [AppRoutingModule, BrowserModule, FormsModule],
     providers: [],
     bootstrap: [AppComponent],
 })

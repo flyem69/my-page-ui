@@ -9,17 +9,15 @@ import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
 })
 export class SwitchComponent implements OnInit {
     @Input() subject!: BehaviorSubject<boolean>;
-    appearance: string = '';
+    appearance$: BehaviorSubject<string>;
     mode: string = '';
 
-    constructor(private darkModeService: DarkModeService) {}
+    constructor(private darkModeService: DarkModeService) {
+        this.appearance$ = new BehaviorSubject<string>('');
+    }
 
     ngOnInit(): void {
-        this.darkModeService
-            .getObservable()
-            .subscribe(
-                (darkMode) => (this.appearance = darkMode ? 'dark' : 'light')
-            );
+        this.darkModeService.subscribe(this.appearance$);
         this.subject.subscribe((value) => {
             this.mode = value ? 'on' : 'off';
         });

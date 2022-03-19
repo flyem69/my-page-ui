@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from '../../services/darkmode/dark-mode.service';
+import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
 
 @Component({
-    selector: 'app-menu',
-    templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss'],
+    selector: 'app-streams',
+    templateUrl: './streams.component.html',
+    styleUrls: ['./streams.component.scss'],
 })
-export class MenuComponent implements OnInit {
+export class StreamsComponent implements OnInit {
     appearance$: BehaviorSubject<string>;
 
     constructor(private darkModeService: DarkModeService) {

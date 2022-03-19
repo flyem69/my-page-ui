@@ -46,7 +46,7 @@
                 [valueRegex]="inputRegex.LIMIT_9999"
                 style="grid-area: h;"></app-input>
             <div
-                [ngClass]="['button', appearance]"
+                [ngClass]="['button', appearance$ | async]"
                 (click)="calcRaceFuel()"
                 style="grid-area: i;">
                 Calculate race fuel
@@ -74,7 +74,7 @@
                 [valueRegex]="inputRegex.LIMIT_9999"
                 style="grid-area: d;"></app-input>
             <div
-                [ngClass]="['button', appearance]"
+                [ngClass]="['button', appearance$ | async]"
                 (click)="calcRoadFuel()"
                 style="grid-area: e;">
                 Calculate road fuel

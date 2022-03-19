@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
 import { InputData } from 'src/app/models/input-data';
@@ -11,28 +11,34 @@ import { distinctUntilChanged } from 'rxjs/operators';
     styleUrls: ['./fuel.component.scss'],
 })
 export class FuelComponent implements OnInit {
-    private lapTimeValidity = new BehaviorSubject<boolean>(true);
-    appearance = '';
-    inputsData: { [name: string]: InputData } = {};
-    inputRegex = InputRegex;
-    calcLock = false;
-    resultValue = new BehaviorSubject<number>(0);
-    result = '';
+    private lapTimeValidity$: BehaviorSubject<boolean>;
+    appearance$: BehaviorSubject<string>;
+    inputsData: { [name: string]: InputData };
+    inputRegex: typeof InputRegex;
+    calcLock: boolean;
+    resultValue: BehaviorSubject<number>;
+    result: string;
 
     constructor(private darkModeService: DarkModeService) {
-        this.inputsData['lapTimeMin'] = this.getInputData(this.lapTimeValidity);
-        this.inputsData['lapTimeS'] = this.getInputData(this.lapTimeValidity);
-        this.inputsData['lapTimeMS'] = this.getInputData(this.lapTimeValidity);
-        this.inputsData['fuelPerLap'] = this.getInputData();
-        this.inputsData['raceLength'] = this.getInputData();
-        this.inputsData['fuelPer100'] = this.getInputData();
-        this.inputsData['distance'] = this.getInputData();
+        this.lapTimeValidity$ = new BehaviorSubject<boolean>(true);
+        this.appearance$ = new BehaviorSubject<string>('');
+        this.inputsData = {
+            lapTimeMin: this.getInputData(this.lapTimeValidity$),
+            lapTimeS: this.getInputData(this.lapTimeValidity$),
+            lapTimeMS: this.getInputData(this.lapTimeValidity$),
+            fuelPerLap: this.getInputData(),
+            raceLength: this.getInputData(),
+            fuelPer100: this.getInputData(),
+            distance: this.getInputData(),
+        };
+        this.inputRegex = InputRegex;
+        this.calcLock = false;
+        this.resultValue = new BehaviorSubject<number>(0);
+        this.result = '';
     }
 
     ngOnInit(): void {
-        this.darkModeService.getObservable().subscribe((darkMode) => {
-            this.appearance = darkMode ? 'dark' : 'light';
-        });
+        this.darkModeService.subscribe(this.appearance$);
         this.resultValue.pipe(distinctUntilChanged()).subscribe((value) => {
             this.result = value + ' l';
         });
@@ -59,7 +65,7 @@ export class FuelComponent implements OnInit {
         const raceInputs = {
             lapTime: {
                 value: lapTimeValue,
-                validity: this.lapTimeValidity,
+                validity: this.lapTimeValidity$,
             },
             fuelPerLap: {
                 value: fuelPerLapValue,
