@@ -15,6 +15,6 @@ export class MenuComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.darkModeService.subscribe(this.appearance$);
+        this.darkModeService.bindAppearance(this.appearance$);
     }
 }

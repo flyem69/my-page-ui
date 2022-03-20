@@ -38,7 +38,7 @@ export class FuelComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.darkModeService.subscribe(this.appearance$);
+        this.darkModeService.bindAppearance(this.appearance$);
         this.resultValue.pipe(distinctUntilChanged()).subscribe((value) => {
             this.result = value + ' l';
         });
@@ -60,8 +60,7 @@ export class FuelComponent implements OnInit {
             +raceInputsData['lapTimeMS'].value$.getValue() * 1000 +
             +raceInputsData['lapTimeMS'].value$.getValue();
         const fuelPerLapValue = +raceInputsData['fuelPerLap'].value$.getValue();
-        const raceLengthValue =
-            +raceInputsData['raceLength'].value$.getValue() * 60000;
+        const raceLengthValue = +raceInputsData['raceLength'].value$.getValue() * 60000;
         const raceInputs = {
             lapTime: {
                 value: lapTimeValue,
@@ -110,17 +109,12 @@ export class FuelComponent implements OnInit {
         }
     }
 
-    private initialCalcValidation(inputsData: {
-        [key: string]: InputData;
-    }): boolean {
+    private initialCalcValidation(inputsData: { [key: string]: InputData }): boolean {
         if (this.calcLock) {
             return false;
         }
         for (const inputData of Object.values(inputsData)) {
-            if (
-                !inputData.localValidity$.getValue() ||
-                !inputData.externalValidity$.getValue()
-            ) {
+            if (!inputData.localValidity$.getValue() || !inputData.externalValidity$.getValue()) {
                 return false;
             }
         }
@@ -130,13 +124,9 @@ export class FuelComponent implements OnInit {
     private finalCalcValidation(inputs: {
         [group: string]: { value: number; validity: BehaviorSubject<boolean> };
     }): boolean {
-        const invalidInputs = Object.values(inputs).filter(
-            (input) => input.value === 0
-        );
+        const invalidInputs = Object.values(inputs).filter((input) => input.value === 0);
         if (invalidInputs.length > 0) {
-            this.highlightInputs(
-                invalidInputs.map((invalidInput) => invalidInput.validity)
-            );
+            this.highlightInputs(invalidInputs.map((invalidInput) => invalidInput.validity));
             return false;
         }
         return true;
@@ -148,9 +138,7 @@ export class FuelComponent implements OnInit {
         });
     }
 
-    private getInputData(
-        externalValidity$ = new BehaviorSubject<boolean>(true)
-    ): InputData {
+    private getInputData(externalValidity$ = new BehaviorSubject<boolean>(true)): InputData {
         return {
             value$: new BehaviorSubject<string>(''),
             localValidity$: new BehaviorSubject<boolean>(true),
@@ -162,8 +150,7 @@ export class FuelComponent implements OnInit {
         this.calcLock = true;
         const setResultTime = 500;
         const numberOfChanges = 50;
-        const valueGap =
-            (value - this.resultValue.getValue()) / numberOfChanges;
+        const valueGap = (value - this.resultValue.getValue()) / numberOfChanges;
         const timeGap = setResultTime / numberOfChanges;
         const loopData = {
             iteration: 0,
@@ -183,9 +170,7 @@ export class FuelComponent implements OnInit {
         currentValue: number;
     }) {
         if (data.iteration >= data.limit) {
-            const finalResult = this.fixFloatingPointPrecision(
-                data.currentValue
-            );
+            const finalResult = this.fixFloatingPointPrecision(data.currentValue);
             this.resultValue.next(finalResult);
             this.calcLock = false;
             return;

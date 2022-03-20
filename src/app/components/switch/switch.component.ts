@@ -17,7 +17,7 @@ export class SwitchComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.darkModeService.subscribe(this.appearance$);
+        this.darkModeService.bindAppearance(this.appearance$);
         this.subject.subscribe((value) => {
             this.mode = value ? 'on' : 'off';
         });

@@ -11,15 +11,11 @@ export class DarkModeService {
         this.darkMode$ = new BehaviorSubject<boolean>(false);
     }
 
-    getObservable(): Observable<boolean> {
-        return this.darkMode$.asObservable();
-    }
-
     getSubject(): BehaviorSubject<boolean> {
         return this.darkMode$;
     }
 
-    subscribe(appearance$: BehaviorSubject<string>): void {
+    bindAppearance(appearance$: BehaviorSubject<string>): void {
         this.darkMode$.subscribe((darkMode) => {
             const appearance = darkMode ? 'dark' : 'light';
             appearance$.next(appearance);

@@ -1,5 +1,5 @@
 <div class="streams-layout">
     <div [ngClass]="['streams-search', appearance$ | async]">
-        
+        <app-input [width$]="inputWidth$" [placeholder]="'Search'" [value$]="searchPhrase$"></app-input>
     </div>
 </div>

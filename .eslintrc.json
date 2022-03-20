@@ -45,6 +45,13 @@
             "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
             "allowSeparatedGroups": false
           }
+        ],
+        "prettier/prettier": [
+          "error",
+          {
+            "tabWidth": 4,
+            "printWidth": 120
+          }
         ]
       }
     },

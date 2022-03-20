@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { DarkModeService } from './services/darkmode/dark-mode.service';
 
 @Component({
@@ -7,14 +8,15 @@ import { DarkModeService } from './services/darkmode/dark-mode.service';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    title: string = 'my-page';
-    appearance: string = '';
+    title: string;
+    appearance$: BehaviorSubject<string>;
 
-    constructor(private darkModeService: DarkModeService) {}
+    constructor(private darkModeService: DarkModeService) {
+        this.title = 'my-page';
+        this.appearance$ = new BehaviorSubject<string>('');
+    }
 
     ngOnInit(): void {
-        this.darkModeService.getObservable().subscribe((darkMode) => {
-            this.appearance = darkMode ? 'dark' : 'light';
-        });
+        this.darkModeService.bindAppearance(this.appearance$);
     }
 }

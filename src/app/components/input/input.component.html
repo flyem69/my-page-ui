@@ -3,4 +3,5 @@
     [placeholder]="placeholder"
     [ngModel]="value$ | async"
     (ngModelChange)="change($event)"
+    [ngStyle]="{width: width}"
     (focus)="focus()"/>

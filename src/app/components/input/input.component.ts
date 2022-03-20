@@ -9,14 +9,17 @@ import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
 })
 export class InputComponent implements OnInit {
     @Input() placeholder: string;
+    @Input() width$?: BehaviorSubject<string>;
     @Input() valueRegex?: RegExp;
     @Input() localValidity$?: BehaviorSubject<boolean>;
     @Input() externalValidity$?: BehaviorSubject<boolean>;
     @Input() value$!: BehaviorSubject<string>;
     appearance$: BehaviorSubject<string>;
     validity: string;
+    width: string;
 
     constructor(private darkModeService: DarkModeService) {
+        this.width = '40px';
         this.placeholder = '';
         this.appearance$ = new BehaviorSubject<string>('');
         this.validity = 'valid';
@@ -24,23 +27,13 @@ export class InputComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.valueRegex && !this.localValidity$) {
-            throw Error(
-                'Missing localValidity$ value on input component when valueRegex is present'
-            );
+            throw Error('Missing localValidity$ value on input component when valueRegex is present');
         }
-        this.darkModeService.subscribe(this.appearance$);
-        if (this.localValidity$ && this.externalValidity$) {
-            combineLatest([
-                this.localValidity$,
-                this.externalValidity$,
-            ]).subscribe((validities) => {
-                this.setValidity(validities[0] && validities[1]);
-            });
-        } else if (this.externalValidity$) {
-            this.externalValidity$.subscribe(this.setValidity);
-        } else if (this.localValidity$) {
-            this.localValidity$.subscribe(this.setValidity);
+        this.darkModeService.bindAppearance(this.appearance$);
+        if (this.width$) {
+            this.width$.subscribe((width) => (this.width = width));
         }
+        this.initValidity();
     }
 
     change(value: string): void {
@@ -55,6 +48,18 @@ export class InputComponent implements OnInit {
     focus(): void {
         if (this.externalValidity$ && !this.externalValidity$.getValue()) {
             this.externalValidity$.next(true);
+        }
+    }
+
+    private initValidity(): void {
+        if (this.localValidity$ && this.externalValidity$) {
+            combineLatest([this.localValidity$, this.externalValidity$]).subscribe((validities) => {
+                this.setValidity(validities[0] && validities[1]);
+            });
+        } else if (this.externalValidity$) {
+            this.externalValidity$.subscribe(this.setValidity);
+        } else if (this.localValidity$) {
+            this.localValidity$.subscribe(this.setValidity);
         }
     }
 
