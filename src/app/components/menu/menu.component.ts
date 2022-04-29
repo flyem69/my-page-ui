@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from '../../services/darkmode/dark-mode.service';
+import { DarkModeService } from '../../services/dark-mode/dark-mode.service';
 
 @Component({
     selector: 'app-menu',

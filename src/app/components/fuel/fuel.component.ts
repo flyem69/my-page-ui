@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
-import { InputData } from 'src/app/models/input-data';
+import { DarkModeService } from 'src/app/services/dark-mode/dark-mode.service';
+import { FuelInputData } from 'src/app/models/fuel-input-data';
 import { InputRegex } from 'src/app/enumeration/input-regex';
 import { distinctUntilChanged } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 export class FuelComponent implements OnInit {
     private lapTimeValidity$: BehaviorSubject<boolean>;
     appearance$: BehaviorSubject<string>;
-    inputsData: { [name: string]: InputData };
+    inputsData: { [name: string]: FuelInputData };
     inputRegex: typeof InputRegex;
     calcLock: boolean;
     resultValue: BehaviorSubject<number>;
@@ -109,7 +109,7 @@ export class FuelComponent implements OnInit {
         }
     }
 
-    private initialCalcValidation(inputsData: { [key: string]: InputData }): boolean {
+    private initialCalcValidation(inputsData: { [key: string]: FuelInputData }): boolean {
         if (this.calcLock) {
             return false;
         }
@@ -138,7 +138,7 @@ export class FuelComponent implements OnInit {
         });
     }
 
-    private getInputData(externalValidity$ = new BehaviorSubject<boolean>(true)): InputData {
+    private getInputData(externalValidity$ = new BehaviorSubject<boolean>(true)): FuelInputData {
         return {
             value$: new BehaviorSubject<string>(''),
             localValidity$: new BehaviorSubject<boolean>(true),

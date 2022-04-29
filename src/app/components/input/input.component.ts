@@ -1,6 +1,6 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
-import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
+import { DarkModeService } from 'src/app/services/dark-mode/dark-mode.service';
 
 @Component({
     selector: 'app-input',
@@ -8,12 +8,12 @@ import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
     styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnInit {
+    @Input() value$!: BehaviorSubject<string>;
     @Input() placeholder: string;
     @Input() width$?: BehaviorSubject<string>;
     @Input() valueRegex?: RegExp;
     @Input() localValidity$?: BehaviorSubject<boolean>;
     @Input() externalValidity$?: BehaviorSubject<boolean>;
-    @Input() value$!: BehaviorSubject<string>;
     appearance$: BehaviorSubject<string>;
     validity: string;
     width: string;
@@ -27,7 +27,9 @@ export class InputComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.valueRegex && !this.localValidity$) {
-            throw Error('Missing localValidity$ value on input component when valueRegex is present');
+            throw Error(
+                'Missing localValidity$ value on input component when valueRegex is present'
+            );
         }
         this.darkModeService.bindAppearance(this.appearance$);
         if (this.width$) {

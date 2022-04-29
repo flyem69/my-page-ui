@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
+import { DarkModeService } from 'src/app/services/dark-mode/dark-mode.service';
 
 @Component({
     selector: 'app-header',
@@ -8,7 +8,7 @@ import { DarkModeService } from 'src/app/services/darkmode/dark-mode.service';
     styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChild('toolbar') toolbar!: ElementRef<HTMLDivElement>;
+    @ViewChild('toolbar') private toolbar!: ElementRef<HTMLDivElement>;
     appearance$: BehaviorSubject<string>;
     darkMode$: BehaviorSubject<boolean>;
 
@@ -26,7 +26,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.toolbar.nativeElement.removeEventListener('wheel', (event) => this.scrollToolbar(event));
+        this.toolbar.nativeElement.removeEventListener('wheel', (event) =>
+            this.scrollToolbar(event)
+        );
     }
 
     private scrollToolbar(event: WheelEvent) {

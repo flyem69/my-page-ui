@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DarkModeService } from './services/dark-mode/dark-mode.service';
+import { DarkModeService } from 'src/app/services/dark-mode/dark-mode.service';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    selector: 'app-loader',
+    templateUrl: './loader.component.html',
+    styleUrls: ['./loader.component.scss'],
 })
-export class AppComponent implements OnInit {
-    title: string;
+export class LoaderComponent implements OnInit {
     appearance$: BehaviorSubject<string>;
 
     constructor(private darkModeService: DarkModeService) {
-        this.title = 'my-page';
         this.appearance$ = new BehaviorSubject<string>('');
     }
 
