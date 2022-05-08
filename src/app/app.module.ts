@@ -11,25 +11,27 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { NgModule } from '@angular/core';
 import { StreamCardComponent } from './components/stream-card/stream-card.component';
+import { StreamComponent } from './components/stream/stream.component';
 import { StreamsComponent } from './components/streams/streams.component';
 import { SwitchComponent } from './components/switch/switch.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        FuelComponent,
-        HeaderComponent,
-        InputComponent,
-        MenuComponent,
-        StreamsComponent,
-        SwitchComponent,
-        StreamCardComponent,
-        LoaderComponent,
-        ComponentsAnchorDirective,
-        AfterElementInitDirective,
-    ],
-    imports: [AppRoutingModule, BrowserModule, FormsModule],
-    providers: [],
-    bootstrap: [AppComponent],
+	declarations: [
+		AfterElementInitDirective,
+		AppComponent,
+		ComponentsAnchorDirective,
+		FuelComponent,
+		HeaderComponent,
+		InputComponent,
+		LoaderComponent,
+		MenuComponent,
+		StreamCardComponent,
+		StreamComponent,
+		StreamsComponent,
+		SwitchComponent,
+	],
+	imports: [AppRoutingModule, BrowserModule, FormsModule],
+	providers: [],
+	bootstrap: [AppComponent],
 })
 export class AppModule {}
